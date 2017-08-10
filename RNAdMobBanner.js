@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
-import {
-  NativeModules,
-  requireNativeComponent,
-  UIManager,
-  findNodeHandle,
-  ViewPropTypes,
-} from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+import { NativeModules, requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
+import { string, func, arrayOf, bool, object, shape, instanceOf, oneOf, number } from 'prop-types';
 
 import { createErrorFromErrorData } from './utils';
 
 class AdMobBanner extends Component {
-
   constructor() {
     super();
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleDidFailToReceiveAdWithError = this.handleDidFailToReceiveAdWithError.bind(this);
     this.state = {
-      style: {},
+      style: {}
     };
   }
 
@@ -29,7 +22,7 @@ class AdMobBanner extends Component {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this._bannerView),
       UIManager.RNGADBannerView.Commands.loadBanner,
-      null,
+      null
     );
   }
 
@@ -63,7 +56,7 @@ class AdMobBanner extends Component {
 Object.defineProperty(AdMobBanner, 'simulatorId', {
   get() {
     return NativeModules.RNGADBannerViewManager.simulatorId;
-  },
+  }
 });
 
 AdMobBanner.propTypes = {
@@ -104,6 +97,25 @@ AdMobBanner.propTypes = {
   onAdViewWillDismissScreen: func,
   onAdViewDidDismissScreen: func,
   onAdViewWillLeaveApplication: func,
+
+  targeting: shape({
+    /**
+     * Arbitary object of custom targeting information.
+     */
+    customTargeting: object,
+
+    /**
+     * Array of exclusion labels.
+     */
+    categoryExclusions: arrayOf(string),
+
+    /**
+     * You can set a publisher provided identifier (PPID) for use in frequency
+     * capping, audience segmentation and targetging, sequential ad rotation, and
+     * other audience-based ad delivery controls across devices.
+     */
+    publisherProvidedID: string
+  })
 };
 
 const RNGADBannerView = requireNativeComponent('RNGADBannerView', AdMobBanner);

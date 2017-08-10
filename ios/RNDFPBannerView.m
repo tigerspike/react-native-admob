@@ -54,9 +54,9 @@
 
     if(_targeting != nil) {
 
-        NSDictionary *publisherProvidedID = [_targeting objectForKey:@"publisherProvidedID"];
-        if(publisherProvidedID != nil) {
-            request.publisherProvidedID = publisherProvidedID
+        NSString *publisherProvidedID = [_targeting objectForKey:@"publisherProvidedID"];
+        if (publisherProvidedID != nil) {
+            request.publisherProvidedID = publisherProvidedID;
         }
 
         NSArray *categoryExclusions = [_targeting objectForKey:@"categoryExclusions"];
