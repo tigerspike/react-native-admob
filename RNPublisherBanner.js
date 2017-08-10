@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import {
-  NativeModules,
-  requireNativeComponent,
-  UIManager,
-  findNodeHandle,
-  ViewPropTypes,
-} from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+import { NativeModules, requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
+import { string, func, arrayOf, bool, object, shape, instanceOf, oneOf, number } from 'prop-types';
 
 import { createErrorFromErrorData } from './utils';
 
 class PublisherBanner extends Component {
-
   constructor() {
     super();
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleAdmobDispatchAppEvent = this.handleAdmobDispatchAppEvent.bind(this);
     this.handleDidFailToReceiveAdWithError = this.handleDidFailToReceiveAdWithError.bind(this);
     this.state = {
-      style: {},
+      style: {}
     };
   }
 
@@ -30,7 +23,7 @@ class PublisherBanner extends Component {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this._bannerView),
       UIManager.RNDFPBannerView.Commands.loadBanner,
-      null,
+      null
     );
   }
 
@@ -72,7 +65,7 @@ class PublisherBanner extends Component {
 Object.defineProperty(PublisherBanner, 'simulatorId', {
   get() {
     return NativeModules.RNDFPBannerViewManager.simulatorId;
-  },
+  }
 });
 
 PublisherBanner.propTypes = {
@@ -119,6 +112,25 @@ PublisherBanner.propTypes = {
   onAdViewDidDismissScreen: func,
   onAdViewWillLeaveApplication: func,
   onAdmobDispatchAppEvent: func,
+
+  targeting: shape({
+    /**
+     * Arbitary object of custom targeting information.
+     */
+    customTargeting: object,
+
+    /**
+     * Array of exclusion labels.
+     */
+    categoryExclusions: arrayOf(string),
+
+    /**
+     * You can set a publisher provided identifier (PPID) for use in frequency
+     * capping, audience segmentation and targetging, sequential ad rotation, and 
+     * other audience-based ad delivery controls across devices.
+     */
+    publisherProvidedID: string
+  })
 };
 
 const RNDFPBannerView = requireNativeComponent('RNDFPBannerView', PublisherBanner);

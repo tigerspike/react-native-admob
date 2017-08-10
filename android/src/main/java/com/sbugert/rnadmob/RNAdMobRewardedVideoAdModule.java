@@ -80,16 +80,16 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
         String errorString = null;
 
         switch (errorCode) {
-            case AdRequest.ERROR_CODE_INTERNAL_ERROR:
+        case AdRequest.ERROR_CODE_INTERNAL_ERROR:
             errorString = "ERROR_CODE_INTERNAL_ERROR";
             break;
-            case AdRequest.ERROR_CODE_INVALID_REQUEST:
+        case AdRequest.ERROR_CODE_INVALID_REQUEST:
             errorString = "ERROR_CODE_INVALID_REQUEST";
             break;
-            case AdRequest.ERROR_CODE_NETWORK_ERROR:
+        case AdRequest.ERROR_CODE_NETWORK_ERROR:
             errorString = "ERROR_CODE_NETWORK_ERROR";
             break;
-            case AdRequest.ERROR_CODE_NO_FILL:
+        case AdRequest.ERROR_CODE_NO_FILL:
             errorString = "ERROR_CODE_NO_FILL";
             break;
         }
@@ -100,7 +100,8 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
     }
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {
-        getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+        getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName,
+                params);
     }
 
     @ReactMethod
@@ -110,19 +111,21 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
 
     @ReactMethod
     public void setTestDevices(ReadableArray testDevices) {
-      ReadableNativeArray nativeArray = (ReadableNativeArray)testDevices;
-      ArrayList<Object> list = nativeArray.toArrayList();
-      this.testDevices = list.toArray(new String[list.size()]);
+        ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
+        ArrayList<Object> list = nativeArray.toArrayList();
+        this.testDevices = list.toArray(new String[list.size()]);
     }
 
     @ReactMethod
     public void requestAd(final Promise promise) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void run () {
-                RNAdMobRewardedVideoAdModule.this.mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getCurrentActivity());
+            public void run() {
+                RNAdMobRewardedVideoAdModule.this.mRewardedVideoAd = MobileAds
+                        .getRewardedVideoAdInstance(getCurrentActivity());
 
-                RNAdMobRewardedVideoAdModule.this.mRewardedVideoAd.setRewardedVideoAdListener(RNAdMobRewardedVideoAdModule.this);
+                RNAdMobRewardedVideoAdModule.this.mRewardedVideoAd
+                        .setRewardedVideoAdListener(RNAdMobRewardedVideoAdModule.this);
 
                 if (mRewardedVideoAd.isLoaded()) {
                     promise.reject("E_AD_ALREADY_LOADED", "Ad is already loaded.");
@@ -148,7 +151,7 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
     public void showAd(final Promise promise) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 if (mRewardedVideoAd.isLoaded()) {
                     mRewardedVideoAd.show();
                     promise.resolve(null);
@@ -163,7 +166,7 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
     public void isReady(final Callback callback) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 callback.invoke(mRewardedVideoAd.isLoaded());
             }
         });

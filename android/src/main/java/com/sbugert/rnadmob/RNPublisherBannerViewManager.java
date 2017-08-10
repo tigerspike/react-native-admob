@@ -38,6 +38,7 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
   AdSize[] validAdSizes;
   String adUnitID;
   AdSize adSize;
+  HashMap<string, Object> targeting;
 
   public ReactPublisherAdView(final Context context) {
     super(context);
@@ -45,7 +46,8 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
   }
 
   private void createAdView() {
-    if (this.adView != null) this.adView.destroy();
+    if (this.adView != null)
+      this.adView.destroy();
 
     final Context context = getContext();
     this.adView = new PublisherAdView(context);
@@ -67,18 +69,18 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
       public void onAdFailedToLoad(int errorCode) {
         WritableMap event = Arguments.createMap();
         switch (errorCode) {
-          case PublisherAdRequest.ERROR_CODE_INTERNAL_ERROR:
-            event.putString("error", "ERROR_CODE_INTERNAL_ERROR");
-            break;
-          case PublisherAdRequest.ERROR_CODE_INVALID_REQUEST:
-            event.putString("error", "ERROR_CODE_INVALID_REQUEST");
-            break;
-          case PublisherAdRequest.ERROR_CODE_NETWORK_ERROR:
-            event.putString("error", "ERROR_CODE_NETWORK_ERROR");
-            break;
-          case PublisherAdRequest.ERROR_CODE_NO_FILL:
-            event.putString("error", "ERROR_CODE_NO_FILL");
-            break;
+        case PublisherAdRequest.ERROR_CODE_INTERNAL_ERROR:
+          event.putString("error", "ERROR_CODE_INTERNAL_ERROR");
+          break;
+        case PublisherAdRequest.ERROR_CODE_INVALID_REQUEST:
+          event.putString("error", "ERROR_CODE_INVALID_REQUEST");
+          break;
+        case PublisherAdRequest.ERROR_CODE_NETWORK_ERROR:
+          event.putString("error", "ERROR_CODE_NETWORK_ERROR");
+          break;
+        case PublisherAdRequest.ERROR_CODE_NO_FILL:
+          event.putString("error", "ERROR_CODE_NO_FILL");
+          break;
         }
         sendEvent("onDidFailToReceiveAdWithError", event);
       }
@@ -121,10 +123,7 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
 
   private void sendEvent(String name, @Nullable WritableMap event) {
     ReactContext reactContext = (ReactContext) getContext();
-    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-            getId(),
-            name,
-            event);
+    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), name, event);
   }
 
   public void loadBanner() {
@@ -151,6 +150,18 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
         adRequestBuilder.addTestDevice(testDevices[i]);
       }
     }
+
+    /**
+     * Targeting
+     * https://developers.google.com/mobile-ads-sdk/docs/dfp/android/targeting 
+     */
+
+    for (Map.Entry<String, Object> entry : item.entrySet()) {
+      String key = entry.getKey();
+      Object value = entry.getValue();
+      adRequestBuilder.addCustomTargeting(key, value.toString());
+    }
+
     PublisherAdRequest adRequest = adRequestBuilder.build();
     this.adView.loadAd(adRequest);
   }
@@ -177,16 +188,17 @@ class ReactPublisherAdView extends ReactViewGroup implements AppEventListener {
     this.validAdSizes = adSizes;
   }
 
+  public void setTargeting(HashMap<string, object> targeting) {
+    this.targeting = targeting;
+  }
+
   @Override
   public void onAppEvent(String name, String info) {
     WritableMap event = Arguments.createMap();
     event.putString("name", name);
     event.putString("info", info);
     ReactContext reactContext = (ReactContext) getContext();
-    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-            getId(),
-            "onAdmobDispatchAppEvent",
-            event);
+    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onAdmobDispatchAppEvent", event);
     String message = String.format("Received app event (%s, %s)", name, info);
     Log.d("PublisherAdBanner", message);
   }
@@ -200,6 +212,7 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
   public static final String PROP_VALID_AD_SIZES = "validAdSizes";
   public static final String PROP_AD_UNIT_ID = "adUnitID";
   public static final String PROP_TEST_DEVICES = "testDevices";
+  public static final String PROP_TARGETING = "targeting";
 
   public static final int COMMAND_LOAD_BANNER = 1;
 
@@ -221,16 +234,14 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
   @Nullable
   public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
     MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
-    return builder
-      .put("onSizeChange", MapBuilder.of("registrationName", "onSizeChange"))
-      .put("onAdViewDidReceiveAd", MapBuilder.of("registrationName", "onAdViewDidReceiveAd"))
-      .put("onDidFailToReceiveAdWithError", MapBuilder.of("registrationName", "onDidFailToReceiveAdWithError"))
-      .put("onAdViewWillPresentScreen", MapBuilder.of("registrationName", "onAdViewWillPresentScreen"))
-      .put("onAdViewWillDismissScreen", MapBuilder.of("registrationName", "onAdViewWillDismissScreen"))
-      .put("onAdViewDidDismissScreen", MapBuilder.of("registrationName", "onAdViewDidDismissScreen"))
-      .put("onAdViewWillLeaveApplication", MapBuilder.of("registrationName", "onAdViewWillLeaveApplication"))
-      .put("onAdmobDispatchAppEvent", MapBuilder.of("registrationName", "onAdmobDispatchAppEvent"))
-      .build();
+    return builder.put("onSizeChange", MapBuilder.of("registrationName", "onSizeChange"))
+        .put("onAdViewDidReceiveAd", MapBuilder.of("registrationName", "onAdViewDidReceiveAd"))
+        .put("onDidFailToReceiveAdWithError", MapBuilder.of("registrationName", "onDidFailToReceiveAdWithError"))
+        .put("onAdViewWillPresentScreen", MapBuilder.of("registrationName", "onAdViewWillPresentScreen"))
+        .put("onAdViewWillDismissScreen", MapBuilder.of("registrationName", "onAdViewWillDismissScreen"))
+        .put("onAdViewDidDismissScreen", MapBuilder.of("registrationName", "onAdViewDidDismissScreen"))
+        .put("onAdViewWillLeaveApplication", MapBuilder.of("registrationName", "onAdViewWillLeaveApplication"))
+        .put("onAdmobDispatchAppEvent", MapBuilder.of("registrationName", "onAdmobDispatchAppEvent")).build();
   }
 
   @ReactProp(name = PROP_AD_SIZE)
@@ -241,14 +252,14 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
 
   @ReactProp(name = PROP_VALID_AD_SIZES)
   public void setPropValidAdSizes(final ReactPublisherAdView view, final ReadableArray adSizeStrings) {
-    ReadableNativeArray nativeArray = (ReadableNativeArray)adSizeStrings;
+    ReadableNativeArray nativeArray = (ReadableNativeArray) adSizeStrings;
     ArrayList<Object> list = nativeArray.toArrayList();
     String[] adSizeStringsArray = list.toArray(new String[list.size()]);
     AdSize[] adSizes = new AdSize[list.size()];
 
     for (int i = 0; i < adSizeStringsArray.length; i++) {
-        String adSizeString = adSizeStringsArray[i];
-        adSizes[i] = getAdSizeFromString(adSizeString);
+      String adSizeString = adSizeStringsArray[i];
+      adSizes[i] = getAdSizeFromString(adSizeString);
     }
     view.setValidAdSizes(adSizes);
   }
@@ -260,31 +271,38 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
 
   @ReactProp(name = PROP_TEST_DEVICES)
   public void setPropTestDevices(final ReactPublisherAdView view, final ReadableArray testDevices) {
-    ReadableNativeArray nativeArray = (ReadableNativeArray)testDevices;
+    ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
     ArrayList<Object> list = nativeArray.toArrayList();
     view.setTestDevices(list.toArray(new String[list.size()]));
   }
 
+  @ReactProp(name = PROP_TARGETING)
+  public void setPropTargeting(final ReactAdView view, final ReadableMap targeting) {
+    ReadableNativeMap nativeMap = (ReadableNativeMap) targeting;
+    HashMap<String, Object> items = nativeMap.toHashMap();
+    view.setTargeting(items);
+  }
+
   private AdSize getAdSizeFromString(String adSize) {
     switch (adSize) {
-      case "banner":
-        return AdSize.BANNER;
-      case "largeBanner":
-        return AdSize.LARGE_BANNER;
-      case "mediumRectangle":
-        return AdSize.MEDIUM_RECTANGLE;
-      case "fullBanner":
-        return AdSize.FULL_BANNER;
-      case "leaderBoard":
-        return AdSize.LEADERBOARD;
-      case "smartBannerPortrait":
-        return AdSize.SMART_BANNER;
-      case "smartBannerLandscape":
-        return AdSize.SMART_BANNER;
-      case "smartBanner":
-        return AdSize.SMART_BANNER;
-      default:
-        return AdSize.BANNER;
+    case "banner":
+      return AdSize.BANNER;
+    case "largeBanner":
+      return AdSize.LARGE_BANNER;
+    case "mediumRectangle":
+      return AdSize.MEDIUM_RECTANGLE;
+    case "fullBanner":
+      return AdSize.FULL_BANNER;
+    case "leaderBoard":
+      return AdSize.LEADERBOARD;
+    case "smartBannerPortrait":
+      return AdSize.SMART_BANNER;
+    case "smartBannerLandscape":
+      return AdSize.SMART_BANNER;
+    case "smartBanner":
+      return AdSize.SMART_BANNER;
+    default:
+      return AdSize.BANNER;
     }
   }
 
@@ -305,9 +323,9 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
   @Override
   public void receiveCommand(ReactPublisherAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
     switch (commandId) {
-      case COMMAND_LOAD_BANNER:
-        root.loadBanner();
-        break;
+    case COMMAND_LOAD_BANNER:
+      root.loadBanner();
+      break;
     }
   }
 }

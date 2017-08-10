@@ -39,7 +39,8 @@ class ReactAdView extends ReactViewGroup {
   }
 
   private void createAdView() {
-    if (this.adView != null) this.adView.destroy();
+    if (this.adView != null)
+      this.adView.destroy();
 
     final Context context = getContext();
     this.adView = new AdView(context);
@@ -60,18 +61,18 @@ class ReactAdView extends ReactViewGroup {
       public void onAdFailedToLoad(int errorCode) {
         WritableMap event = Arguments.createMap();
         switch (errorCode) {
-          case AdRequest.ERROR_CODE_INTERNAL_ERROR:
-            event.putString("error", "ERROR_CODE_INTERNAL_ERROR");
-            break;
-          case AdRequest.ERROR_CODE_INVALID_REQUEST:
-            event.putString("error", "ERROR_CODE_INVALID_REQUEST");
-            break;
-          case AdRequest.ERROR_CODE_NETWORK_ERROR:
-            event.putString("error", "ERROR_CODE_NETWORK_ERROR");
-            break;
-          case AdRequest.ERROR_CODE_NO_FILL:
-            event.putString("error", "ERROR_CODE_NO_FILL");
-            break;
+        case AdRequest.ERROR_CODE_INTERNAL_ERROR:
+          event.putString("error", "ERROR_CODE_INTERNAL_ERROR");
+          break;
+        case AdRequest.ERROR_CODE_INVALID_REQUEST:
+          event.putString("error", "ERROR_CODE_INVALID_REQUEST");
+          break;
+        case AdRequest.ERROR_CODE_NETWORK_ERROR:
+          event.putString("error", "ERROR_CODE_NETWORK_ERROR");
+          break;
+        case AdRequest.ERROR_CODE_NO_FILL:
+          event.putString("error", "ERROR_CODE_NO_FILL");
+          break;
         }
         sendEvent("onDidFailToReceiveAdWithError", event);
       }
@@ -114,10 +115,7 @@ class ReactAdView extends ReactViewGroup {
 
   private void sendEvent(String name, @Nullable WritableMap event) {
     ReactContext reactContext = (ReactContext) getContext();
-    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-            getId(),
-            name,
-            event);
+    reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), name, event);
   }
 
   public void loadBanner() {
@@ -161,13 +159,10 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactAdView> {
   public static final int COMMAND_LOAD_BANNER = 1;
 
   public enum Events {
-    EVENT_SIZE_CHANGE("onSizeChange"),
-    EVENT_RECEIVE_AD("onAdViewDidReceiveAd"),
-    EVENT_ERROR("onDidFailToReceiveAdWithError"),
-    EVENT_WILL_PRESENT("onAdViewWillPresentScreen"),
-    EVENT_WILL_DISMISS("onAdViewWillDismissScreen"),
-    EVENT_DID_DISMISS("onAdViewDidDismissScreen"),
-    EVENT_WILL_LEAVE_APP("onAdViewWillLeaveApplication");
+    EVENT_SIZE_CHANGE("onSizeChange"), EVENT_RECEIVE_AD("onAdViewDidReceiveAd"), EVENT_ERROR(
+        "onDidFailToReceiveAdWithError"), EVENT_WILL_PRESENT("onAdViewWillPresentScreen"), EVENT_WILL_DISMISS(
+            "onAdViewWillDismissScreen"), EVENT_DID_DISMISS(
+                "onAdViewDidDismissScreen"), EVENT_WILL_LEAVE_APP("onAdViewWillLeaveApplication");
 
     private final String mName;
 
@@ -218,31 +213,31 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactAdView> {
 
   @ReactProp(name = PROP_TEST_DEVICES)
   public void setPropTestDevices(final ReactAdView view, final ReadableArray testDevices) {
-    ReadableNativeArray nativeArray = (ReadableNativeArray)testDevices;
+    ReadableNativeArray nativeArray = (ReadableNativeArray) testDevices;
     ArrayList<Object> list = nativeArray.toArrayList();
     view.setTestDevices(list.toArray(new String[list.size()]));
   }
 
   private AdSize getAdSizeFromString(String adSize) {
     switch (adSize) {
-      case "banner":
-        return AdSize.BANNER;
-      case "largeBanner":
-        return AdSize.LARGE_BANNER;
-      case "mediumRectangle":
-        return AdSize.MEDIUM_RECTANGLE;
-      case "fullBanner":
-        return AdSize.FULL_BANNER;
-      case "leaderBoard":
-        return AdSize.LEADERBOARD;
-      case "smartBannerPortrait":
-        return AdSize.SMART_BANNER;
-      case "smartBannerLandscape":
-        return AdSize.SMART_BANNER;
-      case "smartBanner":
-        return AdSize.SMART_BANNER;
-      default:
-        return AdSize.BANNER;
+    case "banner":
+      return AdSize.BANNER;
+    case "largeBanner":
+      return AdSize.LARGE_BANNER;
+    case "mediumRectangle":
+      return AdSize.MEDIUM_RECTANGLE;
+    case "fullBanner":
+      return AdSize.FULL_BANNER;
+    case "leaderBoard":
+      return AdSize.LEADERBOARD;
+    case "smartBannerPortrait":
+      return AdSize.SMART_BANNER;
+    case "smartBannerLandscape":
+      return AdSize.SMART_BANNER;
+    case "smartBanner":
+      return AdSize.SMART_BANNER;
+    default:
+      return AdSize.BANNER;
     }
   }
 
@@ -263,9 +258,9 @@ public class RNAdMobBannerViewManager extends SimpleViewManager<ReactAdView> {
   @Override
   public void receiveCommand(ReactAdView root, int commandId, @javax.annotation.Nullable ReadableArray args) {
     switch (commandId) {
-      case COMMAND_LOAD_BANNER:
-        root.loadBanner();
-        break;
+    case COMMAND_LOAD_BANNER:
+      root.loadBanner();
+      break;
     }
   }
 }

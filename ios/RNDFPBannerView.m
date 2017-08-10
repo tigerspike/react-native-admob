@@ -42,8 +42,34 @@
 }
 
 - (void)loadBanner {
-    GADRequest *request = [GADRequest request];
+
+    /* 
+        DFP Request properties from:
+        https://developers.google.com/mobile-ads-sdk/docs/dfp/ios/api
+        /reference/Classes/DFPRequest#/c:objc(cs)DFPRequest(py)categoryExclusions 
+    */
+
+    DFPRequest *request = [DFPRequest request];
     request.testDevices = _testDevices;
+
+    if(_targeting != nil) {
+
+        NSDictionary *publisherProvidedID = [_targeting objectForKey:@"publisherProvidedID"];
+        if(publisherProvidedID != nil) {
+            request.publisherProvidedID = publisherProvidedID
+        }
+
+        NSArray *categoryExclusions = [_targeting objectForKey:@"categoryExclusions"];
+        if(categoryExclusions != nil) {
+            request.categoryExclusions = categoryExclusions;
+        }
+
+        NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
+        if(customTargeting != nil) {
+            request.customTargeting = customTargeting;
+        }
+    }
+
     [_bannerView loadRequest:request];
 }
 
