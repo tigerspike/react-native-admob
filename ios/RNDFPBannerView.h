@@ -1,4 +1,4 @@
-#if __has_include(<React / RCTComponent.h>)
+#if __has_include(<React/RCTComponent.h>)
 #import <React/RCTView.h>
 #else
 #import "RCTView.h"
@@ -10,18 +10,18 @@
 
 @interface RNDFPBannerView : RCTView <GADBannerViewDelegate, GADAdSizeDelegate, GADAppEventDelegate>
 
-@property(nonatomic, copy) NSArray *validAdSizes;
-@property(nonatomic, copy) NSArray *testDevices;
-@property(nonatomic, copy) NSDictionary *targeting;
+@property (nonatomic, copy) NSArray *validAdSizes;
+@property (nonatomic, copy) NSArray *testDevices;
+@property (nonatomic, copy) NSDictionary *targeting;
 
-@property(nonatomic, copy) RCTBubblingEventBlock onSizeChange;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdmobDispatchAppEvent;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdViewDidReceiveAd;
-@property(nonatomic, copy) RCTBubblingEventBlock onDidFailToReceiveAdWithError;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdViewWillPresentScreen;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdViewWillDismissScreen;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdViewDidDismissScreen;
-@property(nonatomic, copy) RCTBubblingEventBlock onAdViewWillLeaveApplication;
+@property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdmobDispatchAppEvent;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdViewDidReceiveAd;
+@property (nonatomic, copy) RCTBubblingEventBlock onDidFailToReceiveAdWithError;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdViewWillPresentScreen;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdViewWillDismissScreen;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdViewDidDismissScreen;
+@property (nonatomic, copy) RCTBubblingEventBlock onAdViewWillLeaveApplication;
 
 - (void)loadBanner;
 
