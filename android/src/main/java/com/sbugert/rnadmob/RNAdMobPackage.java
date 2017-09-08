@@ -19,7 +19,7 @@ public class RNAdMobPackage implements ReactPackage {
                 new RNAdMobRewardedVideoAdModule(reactContext));
     }
 
-    @Override
+    // Deprecated from RN 0.47.0
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
