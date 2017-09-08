@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { NativeModules, requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
 import { string, func, arrayOf, bool, object, shape, instanceOf, oneOf, number } from 'prop-types';
+=======
+import {
+  requireNativeComponent,
+  UIManager,
+  findNodeHandle,
+  ViewPropTypes,
+} from 'react-native';
+import { string, func, arrayOf } from 'prop-types';
+>>>>>>> 2bd7ca50307f24e90fc292b8497b40a70efe51bb
 
 import { createErrorFromErrorData } from './utils';
 
@@ -64,8 +74,13 @@ class PublisherBanner extends Component {
 
 Object.defineProperty(PublisherBanner, 'simulatorId', {
   get() {
+<<<<<<< HEAD
     return NativeModules.RNDFPBannerViewManager.simulatorId;
   }
+=======
+    return UIManager.RNDFPBannerView.Constants.simulatorId;
+  },
+>>>>>>> 2bd7ca50307f24e90fc292b8497b40a70efe51bb
 });
 
 PublisherBanner.propTypes = {

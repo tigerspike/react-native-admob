@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { NativeModules, requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
-import { string, func, arrayOf, bool, object, shape, instanceOf, oneOf, number } from 'prop-types';
+import { requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
+import { string, func, arrayOf } from 'prop-types';
 
 import { createErrorFromErrorData } from './utils';
 
@@ -55,7 +55,7 @@ class AdMobBanner extends Component {
 
 Object.defineProperty(AdMobBanner, 'simulatorId', {
   get() {
-    return NativeModules.RNGADBannerViewManager.simulatorId;
+    return UIManager.RNGADBannerView.Constants.simulatorId;
   }
 });
 
