@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+import { string, func, arrayOf, shape, object } from 'prop-types';
 
 import { createErrorFromErrorData } from './utils';
 
@@ -126,7 +126,7 @@ PublisherBanner.propTypes = {
 
     /**
      * You can set a publisher provided identifier (PPID) for use in frequency
-     * capping, audience segmentation and targetging, sequential ad rotation, and 
+     * capping, audience segmentation and targetging, sequential ad rotation, and
      * other audience-based ad delivery controls across devices.
      */
     publisherProvidedID: string

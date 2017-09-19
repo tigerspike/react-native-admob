@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { requireNativeComponent, UIManager, findNodeHandle, ViewPropTypes } from 'react-native';
-import { string, func, arrayOf } from 'prop-types';
+import { string, func, arrayOf, shape, object } from 'prop-types';
 
 import { createErrorFromErrorData } from './utils';
 
