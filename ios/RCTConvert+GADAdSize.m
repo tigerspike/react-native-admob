@@ -15,7 +15,7 @@
         return kGADAdSizeFluid;
     } else if ([adSize isEqualToString:@"skyscraper"]) {
         return kGADAdSizeSkyscraper;
-    } else if ([adSize isEqualToString:@"leaderboard"]) {
+    } else if ([adSize isEqualToString:@"leaderBoard"]) {
         return kGADAdSizeLeaderboard;
     } else if ([adSize isEqualToString:@"mediumRectangle"]) {
         return kGADAdSizeMediumRectangle;
