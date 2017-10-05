@@ -310,7 +310,7 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactPublish
       case "stmMobile":
         return new AdSize(300,600);
       case "stmTablet":
-        return new AdSize(663,211);
+        return new AdSize(452,74);
       case "bigBanner":
         return new AdSize(300,600);
       default:

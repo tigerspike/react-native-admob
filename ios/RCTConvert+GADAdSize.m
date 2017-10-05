@@ -26,7 +26,7 @@
     } else if ([adSize isEqualToString:@"stmMobile"]) {
         return GADAdSizeFromCGSize(CGSizeMake(300, 600));
     } else if ([adSize isEqualToString:@"stmTablet"]) {
-        return GADAdSizeFromCGSize(CGSizeMake(663, 211));
+        return GADAdSizeFromCGSize(CGSizeMake(452, 74));
     } else if ([adSize isEqualToString:@"bigBanner"]) {
         return GADAdSizeFromCGSize(CGSizeMake(300, 600));
     }
