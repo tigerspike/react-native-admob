@@ -24,7 +24,7 @@
     } else if ([adSize isEqualToString:@"smartBannerLandscape"]) {
         return kGADAdSizeSmartBannerLandscape;
     } else if ([adSize isEqualToString:@"stmMobile"]) {
-        return GADAdSizeFromCGSize(CGSizeMake(300, 600));
+        return GADAdSizeFromCGSize(CGSizeMake(300, 327));
     } else if ([adSize isEqualToString:@"stmTablet"]) {
         return GADAdSizeFromCGSize(CGSizeMake(452, 74));
     } else if ([adSize isEqualToString:@"bigBanner"]) {
