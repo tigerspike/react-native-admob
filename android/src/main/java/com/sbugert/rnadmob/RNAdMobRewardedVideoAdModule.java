@@ -75,6 +75,11 @@ public class RNAdMobRewardedVideoAdModule extends ReactContextBaseJavaModule imp
     }
 
     @Override
+    public void onRewardedVideoCompleted() {
+       sendEvent("onRewardedVideoCompleted", null);
+    }
+
+    @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
         WritableMap event = Arguments.createMap();
         String errorString = null;
